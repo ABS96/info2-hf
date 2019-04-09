@@ -1,5 +1,8 @@
 # Lyukkártyás program nyilvántartás
- 
+
+Régen a hallgatók lyukkártyára írták a programjaikat, aztán ezt odaadták egy operátornak, aki lefuttatta azokat a tanszéki számítógépen.  
+A projekt célja egy olyan alkalmazás kivitelezése, amellyel az operátor könnyen kezelheti a neki feldolgozásra átadott programokat.
+
 # Specifikáció
 ## Feladat informális leírása
 Egy lyukkártyás programokat nyilvántartó adatbázist szeretnék megvalósítani. Az adatbázisban szerepelni fognak a feldolgozandó programok, illetve az azokat megíró személyek. A cél ezen adatbázis karbantartása, ahol az operátor beviheti, ellenőrizheti, és törölheti az általa feldolgozandó programok adatait.
@@ -18,9 +21,9 @@ Az alkalmazás a következő funkciókat biztosítja:
     * Az adatbázisban tárolt személyek listázása
 ## Adatbázis séma
 Az adatbázisban a következő entitások és attribútumok szerepelnek:
- * Program: azonosító, tulajdonos azonosítója, prioritás, felvétel dátuma
+ * Program: azonosító, prioritás, felvétel dátuma
  * Személy: azonosító, vezetéknév, keresztnév, titulus
 
-A fenti adatok tárolását az alábbi sémával oldjuk meg:
+A fenti adatok tárolására az alábbi séma szolgál:
 ![Séma](./scheme.png "Adatbázis séma")
  
