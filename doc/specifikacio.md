@@ -14,6 +14,7 @@ Az alkalmazás a következő funkciókat biztosítja:
     * Meglévő program adatainak módosítása
     * Programok törlése
     * Az adatbázisban tárolt programok listázása
+    * Programok keresése: szűrés prioritás, tulajdonos, illetve felvétel dátuma alapján
 * Személyek kezelése:
     * Új személyek létrehozása
     * Meglévő személyek adatainak módosítása
