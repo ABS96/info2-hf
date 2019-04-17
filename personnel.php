@@ -54,6 +54,7 @@ include 'common_head.html';
           <th>Azonosító</th>
           <th>Név</th>
           <th>Titulus</th>
+          <th>Programok száma</th>
           <th>Műveletek</th>
         </tr>
       </thead>
@@ -63,6 +64,13 @@ include 'common_head.html';
             <td><?=$row['id']?></td>
             <td><?=$row['nev']?></td>
             <td><?=$row['titulus']?></td>
+            <td>
+              <?php
+                $queryCountPrograms = 'SELECT COUNT(id) FROM program WHERE author = ' . $row['id'];
+                $countResult = mysqli_query($db, $queryCountPrograms) or die(mysqli_error($db));
+                print(mysqli_fetch_row($countResult)[0]);
+              ?>
+            </td>
             <td class="text-right">
               <a class="btn btn-secondary btn-sm" href="edit-person.php?id=<?=$row['id']?>">
                 <i class="fa fa-edit"></i>
