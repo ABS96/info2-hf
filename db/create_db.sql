@@ -14,7 +14,7 @@ CREATE TABLE Szemely
   titulus NVARCHAR(30)
 );
 
-/* 4 oktató */
+/* 4 oktató (id: 1-4) */
 INSERT INTO Szemely
 (vezeteknev, keresztnev, titulus)
 VALUES
@@ -23,7 +23,7 @@ VALUES
 ('Szegedi', 'Gyula', 'oktató'),
 ('Dorogi', 'István', 'oktató'),
 
-/* 8 hallgató */
+/* 8 hallgató (id: 5-12) */
 ('Bodrogi', 'Tímea', 'hallgató'),
 ('Hegedűs', 'Ferenc', 'hallgató'),
 ('Szabó', 'Aurél', 'hallgató'),
@@ -43,32 +43,33 @@ CREATE TABLE Program
 );
 
 /* oktatók programjai */
+/* 0-2 prioritás, legfeljebb 1-4 nappal ezelőtti dátum */
 INSERT INTO Program
 (prioritas, felvetel_datum, author)
 VALUES
-(1, CURDATE()-4, 1),
-(2, CURDATE(), 1),
-(2, CURDATE()-1, 1),
-(0, CURDATE()-3, 1),
-(0, CURDATE()-2, 2),
-(1, CURDATE()-1, 2),
-(1, CURDATE(), 2),
-(1, CURDATE()-1, 3),
-(2, CURDATE()-4, 4),
-(2, CURDATE()-1, 4),
-(1, CURDATE()-2, 4),
-(2, CURDATE()-3, 4),
+(FLOOR(RAND()*3), CURDATE()-(FLOOR(RAND()*4)+1), FLOOR(RAND()*4)+1),
+(FLOOR(RAND()*3), CURDATE()-(FLOOR(RAND()*4)+1), FLOOR(RAND()*4)+1),
+(FLOOR(RAND()*3), CURDATE()-(FLOOR(RAND()*4)+1), FLOOR(RAND()*4)+1),
+(FLOOR(RAND()*3), CURDATE()-(FLOOR(RAND()*4)+1), FLOOR(RAND()*4)+1),
+(FLOOR(RAND()*3), CURDATE()-(FLOOR(RAND()*4)+1), FLOOR(RAND()*4)+1),
+(FLOOR(RAND()*3), CURDATE()-(FLOOR(RAND()*4)+1), FLOOR(RAND()*4)+1),
+(FLOOR(RAND()*3), CURDATE()-(FLOOR(RAND()*4)+1), FLOOR(RAND()*4)+1),
+(FLOOR(RAND()*3), CURDATE()-(FLOOR(RAND()*4)+1), FLOOR(RAND()*4)+1),
+(FLOOR(RAND()*3), CURDATE()-(FLOOR(RAND()*4)+1), FLOOR(RAND()*4)+1),
+(FLOOR(RAND()*3), CURDATE()-(FLOOR(RAND()*4)+1), FLOOR(RAND()*4)+1),
+(FLOOR(RAND()*3), CURDATE()-(FLOOR(RAND()*4)+1), FLOOR(RAND()*4)+1),
+(FLOOR(RAND()*3), CURDATE()-(FLOOR(RAND()*4)+1), FLOOR(RAND()*4)+1),
 
 /* hallgatók programjai */
-(2, CURDATE()-4, 5),
-(0, CURDATE(), 7),
-(2, CURDATE()-1, 9),
-(2, CURDATE()-3, 9),
-(2, CURDATE()-2, 10),
-(1, CURDATE()-1, 10),
-(2, CURDATE(), 11),
-(0, CURDATE()-1, 12),
-(2, CURDATE()-4, 5),
-(2, CURDATE()-1, 6),
-(2, CURDATE()-2, 5),
-(2, CURDATE()-3, 7);
+(FLOOR(RAND()*3), CURDATE()-(FLOOR(RAND()*4)+1), FLOOR(RAND()*8)+5),
+(FLOOR(RAND()*3), CURDATE()-(FLOOR(RAND()*4)+1), FLOOR(RAND()*8)+5),
+(FLOOR(RAND()*3), CURDATE()-(FLOOR(RAND()*4)+1), FLOOR(RAND()*8)+5),
+(FLOOR(RAND()*3), CURDATE()-(FLOOR(RAND()*4)+1), FLOOR(RAND()*8)+5),
+(FLOOR(RAND()*3), CURDATE()-(FLOOR(RAND()*4)+1), FLOOR(RAND()*8)+5),
+(FLOOR(RAND()*3), CURDATE()-(FLOOR(RAND()*4)+1), FLOOR(RAND()*8)+5),
+(FLOOR(RAND()*3), CURDATE()-(FLOOR(RAND()*4)+1), FLOOR(RAND()*8)+5),
+(FLOOR(RAND()*3), CURDATE()-(FLOOR(RAND()*4)+1), FLOOR(RAND()*8)+5),
+(FLOOR(RAND()*3), CURDATE()-(FLOOR(RAND()*4)+1), FLOOR(RAND()*8)+5),
+(FLOOR(RAND()*3), CURDATE()-(FLOOR(RAND()*4)+1), FLOOR(RAND()*8)+5),
+(FLOOR(RAND()*3), CURDATE()-(FLOOR(RAND()*4)+1), FLOOR(RAND()*8)+5),
+(FLOOR(RAND()*3), CURDATE()-(FLOOR(RAND()*4)+1), FLOOR(RAND()*8)+5);
