@@ -73,10 +73,10 @@ include 'common_head.html';
             </td>
             <td class="text-right">
               <a class="btn btn-secondary btn-sm" href="edit-person.php?id=<?=$row['id']?>">
-                <i class="fa fa-edit"></i>
+                <i class="fa fa-edit"></i> Szerkesztés
               </a>
               <a class="btn btn-danger btn-sm" href="edit-person.php?delete=<?=$row['id']?>">
-                <i class="fa fa-remove"></i>
+                <i class="fa fa-remove"></i> Törlés
               </a>
             </td>
           </tr>
