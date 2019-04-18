@@ -76,7 +76,8 @@ td:last-child {
   display: flex;
   flex-wrap: nowrap;
   overflow: hidden;
-  font-family: 'Geneva', 'Tahoma';
+  font-family: 'Inconsolata', monospace;
+  background: var(--card-background);
   /* margin-left: -0.4em; */
 }
 
@@ -92,9 +93,7 @@ td:last-child {
 .hole {
   display: inline-block;
   width: 1ch;
-  border-width: 10px 20px;
-  border-color: var(--card-background);
-  border-style: solid;
+  margin: 10px 20px;
   height: 20px;
   background: #fff;
   color: transparent;
