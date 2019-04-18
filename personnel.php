@@ -26,6 +26,7 @@ include 'common_head.html';
 </head>
 <body>
   <?php include 'menu.html'; ?>
+
   <div class="container main-content">
     <h1>Személyek kezelése</h1>
     <?php if ($added): ?>
@@ -33,56 +34,68 @@ include 'common_head.html';
         <span class="badge badge-success">Új személy hozzáadva</span>
       </p>
     <?php endif; ?>
+
     <form class="form-inline mb-3" method="post">
       <div class="card">
           <div class="card-body">
-              <input class="form-control ml1 mw-50" type="search" name="search_name" placeholder="🔎" value="<?=isset($_POST['search']) ? $_POST['search_name'] : ''?>">
-              <input type="submit" class="ml-1 btn btn-secondary" value="Keresés" name="search">
+            <div class="input-group">
+              <input type="search" class="form-control" placeholder="név" name="search_name" value="<?=isset($_POST['search']) ? $_POST['search_name'] : ''?>">
+              <div class="input-group-append">
+                <button class="btn btn-secondary" type="submit" value="Keresés" name="search">Keresés</button>
+              </div>
+            </div>
           </div>
       </div>
     </form>
+
     <?php
       $queryListPersonnel = 'SELECT id, CONCAT(vezeteknev, " ", keresztnev) AS nev, titulus FROM szemely';
       if (isset($_POST['search'])) {
-        $queryListPersonnel = $queryListPersonnel . sprintf(' WHERE LOWER(CONCAT(vezeteknev, " ", keresztnev)) LIKE "%%%s%%"', mysqli_real_escape_string($db, strtolower($_POST['search_name'])));
+        $queryListPersonnel = $queryListPersonnel
+        . sprintf(' WHERE LOWER(CONCAT(vezeteknev, " ", keresztnev)) LIKE "%%%s%%"', mysqli_real_escape_string($db, strtolower($_POST['search_name'])));
       }
       $result = mysqli_query($db, $queryListPersonnel) or die(mysqli_error($db));
     ?>
-    <table class="table table-striped table-sm table-bordered">
-      <thead class="thead-dark">
-        <tr>
-          <th>Azonosító</th>
-          <th>Név</th>
-          <th>Titulus</th>
-          <th>Programok száma</th>
-          <th>Műveletek</th>
-        </tr>
-      </thead>
-      <tbody>
-        <?php while ($row = mysqli_fetch_array($result)): ?>
+    <div class="table-responsive">
+      <table class="table table-striped table-sm table-bordered">
+        <thead class="thead-dark">
           <tr>
-            <td><?=$row['id']?></td>
-            <td><?=$row['nev']?></td>
-            <td><?=$row['titulus']?></td>
-            <td>
-              <?php
-                $queryCountPrograms = 'SELECT COUNT(id) FROM program WHERE author = ' . $row['id'];
-                $countResult = mysqli_query($db, $queryCountPrograms) or die(mysqli_error($db));
-                print(mysqli_fetch_row($countResult)[0]);
-              ?>
-            </td>
-            <td class="text-right">
-              <a class="btn btn-secondary btn-sm" href="edit-person.php?id=<?=$row['id']?>">
-                <i class="fa fa-edit"></i> Szerkesztés
-              </a>
-              <a class="btn btn-danger btn-sm" href="edit-person.php?delete=<?=$row['id']?>">
-                <i class="fa fa-remove"></i> Törlés
-              </a>
-            </td>
+            <th>Azonosító</th>
+            <th>Név</th>
+            <th>Titulus</th>
+            <th>Programok száma</th>
+            <th class="">Műveletek</th>
           </tr>
-        <?php endwhile; ?>
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+          <?php while ($row = mysqli_fetch_array($result)): ?>
+            <tr>
+              <td><?=$row['id']?></td>
+              <td><?=$row['nev']?></td>
+              <td><?=$row['titulus']?></td>
+              <td>
+                <?php
+                  $queryCountPrograms = 'SELECT COUNT(id) FROM program WHERE author = ' . $row['id'];
+                  $countResult = mysqli_query($db, $queryCountPrograms) or die(mysqli_error($db));
+                  print(mysqli_fetch_row($countResult)[0]);
+                ?>
+              </td>
+              <td class="text-right">
+                <a class="btn btn-secondary btn-sm" href="programs.php?author=<?=$row['id']?>">
+                  <i class="fa fa-eye"></i><span> Programok</span>
+                </a>
+                <a class="btn btn-secondary btn-sm" href="edit-person.php?id=<?=$row['id']?>">
+                  <i class="fa fa-edit"></i><span> Szerkesztés</span>
+                </a>
+                <a class="btn btn-danger btn-sm" href="edit-person.php?delete=<?=$row['id']?>">
+                  <i class="fa fa-remove"></i><span> Törlés</span>
+                </a>
+              </td>
+            </tr>
+          <?php endwhile; ?>
+        </tbody>
+      </table>
+    </div>
     
     <?php
         closeDb($db);
@@ -122,5 +135,6 @@ include 'common_head.html';
         </div>
       </div>
     </form>
+    
   </div>
 <?php include 'common_footer.html'; ?>

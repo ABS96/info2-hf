@@ -18,12 +18,19 @@ if (isset($_POST['add'])) {
   $added = true;
 }
 
+if (isset($_GET['author'])) {
+  $queryGetName = 'SELECT CONCAT(vezeteknev, " ", keresztnev) AS nev FROM szemely WHERE id = ' . mysqli_real_escape_string($db, $_GET['author']);
+  $nameResult = mysqli_query($db, $queryGetName) or die(mysqli_error($db));
+  $_POST['search_name'] = mysqli_fetch_row($nameResult)[0];
+}
+
 include 'common_head.html';
 ?>
   <title>Program nyilvántartás – Programok</title>
 </head>
 <body>
   <?php include 'menu.html'; ?>
+
   <div class="container main-content">
     <h1>Programok kezelése</h1>
     <?php if ($added): ?>
@@ -31,43 +38,82 @@ include 'common_head.html';
         <span class="badge badge-success">Új program hozzáadva</span>
       </p>
     <?php endif; ?>
-    <form class="form-inline" method="post">
-      <div class="card mb-3">
-        <div class="card-header">
-          Szűrés
-        </div>
-        <div class="card-body">
-          <div class="form-group mb-3">
-            <label for="search_priority" class="mr-2">Prioritás</label>
-            <select class="custom-select" name="search_priority">
-              <option <?=!isset($_POST['search_priority']) || $_POST['search_priority'] === '–' ? 'selected' : ''?>>–</option>
-              <?php
-                for ($i = sizeof($priorities) - 1; $i >= 0; $i--) {
-                  print('<option value="' . $i . '"' . (isset($_POST['search_priority']) && $_POST['search_priority'] == $i && $_POST['search_priority'] != '–' ? ' selected' : '') .'>' . $priorities[$i] . '</option>');
-                }
-              ?>
-            </select>
+
+    <div class="row">
+      <form class="form-inline col" method="post" action="programs.php">
+        <div class="card mb-3">
+          <div class="card-header">
+            Szűrés
           </div>
-          <div class="form-group mb-3">
-            <label for="search_name" class="">Felhasználó neve</label>
-            <input class="form-control ml-2" type="search" name="search_name" value="<?=isset($_POST['search']) ? $_POST['search_name'] : ''?>">
-          </div>
-          <div class="form-group mb-3">
-            <div class="custom-control custom-switch">
-              <input type="checkbox" name="search_date" class="custom-control-input" id="search_date" <?= isset($_POST['search_date']) ? 'checked' : '' ?>>
-              <label class="custom-control-label" for="search_date">Szűrés dátum szerint</label>
+          <div class="card-body">
+            <div class="form-group mb-3">
+              <label for="search_priority" class="mr-2">Prioritás</label>
+              <select class="custom-select" name="search_priority">
+                <option <?=!isset($_POST['search_priority']) || $_POST['search_priority'] === '–' ? 'selected' : ''?>>–</option>
+                <?php
+                  for ($i = sizeof($priorities) - 1; $i >= 0; $i--) {
+                    print('<option value="' . $i . '"' . (isset($_POST['search_priority']) && $_POST['search_priority'] == $i && $_POST['search_priority'] != '–' ? ' selected' : '') .'>' . $priorities[$i] . '</option>');
+                  }
+                ?>
+              </select>
+            </div>
+            <div class="form-group mb-3">
+              <label for="search_name" class="">Felhasználó neve</label>
+              <input class="form-control ml-2" type="search" name="search_name" value="<?=isset($_POST['search_name']) ? $_POST['search_name'] : ''?>">
+            </div>
+            <div class="form-group mb-3">
+              <div class="custom-control custom-switch">
+                <input type="checkbox" name="search_date" class="custom-control-input" id="search_date" <?= isset($_POST['search_date']) ? 'checked' : '' ?>>
+                <label class="custom-control-label" for="search_date">Szűrés dátum szerint</label>
+              </div>
+            </div>
+            <div class="form-group mb-3">
+              <input class="form-control mr-2" type="date" name="search_date_from" value="<?= isset($_POST['search_date']) ? $_POST['search_date_from'] : date('Y-m-d') ?>"> – 
+              <input class="form-control ml-2" type="date" name="search_date_to" value="<?= isset($_POST['search_date']) ? $_POST['search_date_to'] : date('Y-m-d') ?>">
             </div>
           </div>
-          <div class="form-group mb-3">
-            <input class="form-control mr-2" type="date" name="search_date_from" value="<?= isset($_POST['search_date']) ? $_POST['search_date_from'] : date('Y-m-d') ?>"> – 
-            <input class="form-control ml-2" type="date" name="search_date_to" value="<?= isset($_POST['search_date']) ? $_POST['search_date_to'] : date('Y-m-d') ?>">
+          <div class="card-footer">
+            <input type="submit" class="btn btn-secondary" value="Keresés" name="search">
           </div>
         </div>
-        <div class="card-footer">
-          <input type="submit" class="btn btn-secondary"   value="Keresés" name="search">
+      </form>
+
+      <form method="post" action="" class="col">
+        <div class="card mb-3">
+          <div class="card-header">
+            Új program felvétele
+          </div>
+          <div class="card-body">
+            <div class="form-group">
+              <label for="author" class="mr-2">Tulajdonos</label>
+              <select class="custom-select" name="author">
+                <?php
+                  $queryAuthors = 'SELECT id, CONCAT(vezeteknev, " ", keresztnev) AS nev FROM szemely ORDER BY vezeteknev';
+                  $resultAuthors = mysqli_query($db, $queryAuthors) or die(mysqli_error($db));
+                  while ($row = mysqli_fetch_array($resultAuthors)) {
+                    print('<option value="' . $row['id'] . '" >' . $row['nev'] . '</option>');
+                  }
+                ?>
+              </select>
+            </div>
+            <div class="form-group mb-0">
+              <label for="priority" class="mr-2">Prioritás</label>
+              <select class="custom-select" name="priority">
+                <?php
+                  for ($i = sizeof($priorities) - 1; $i >= 0; $i--) {
+                    print('<option value="' . $i . '">' . $priorities[$i] . '</option>');
+                  }
+                ?>
+              </select>
+            </div>
+          </div>
+          <div class="card-footer">
+            <input type="submit" class="btn btn-primary" name="add" value="Hozzáadás">
+          </div>
         </div>
-      </div>
-    </form>
+      </form>
+    </div>
+
     <?php
       $queryListPrograms = 'SELECT CONCAT(sz.vezeteknev , " ", sz.keresztnev) AS nev, program.id, prioritas, author, felvetel_datum FROM program INNER JOIN szemely sz on sz.id = author';
       if(isset($_POST['search'])) {
@@ -80,6 +126,9 @@ include 'common_head.html';
         $queryFilterDate = isset($_POST['search_date']) ? ' AND felvetel_datum >= "' . $searchDateFrom . '" AND felvetel_datum <= "' . $searchDateTo . '"' : '';
         $queryFilter =  $queryFilterName . $queryFilterPriority . $queryFilterDate;
         $queryListPrograms = $queryListPrograms . ' WHERE ' . $queryFilter;
+      }
+      if(isset($_GET['author'])) {
+        $queryListPrograms = $queryListPrograms . ' AND author = ' . mysqli_real_escape_string($db, $_GET['author']);
       }
       $result = mysqli_query($db, $queryListPrograms) or die(mysqli_error($db));
       $author = 0;
@@ -110,51 +159,16 @@ include 'common_head.html';
           <td><?=$row['felvetel_datum']?></td>
           <td class="text-right">
             <a class="btn btn-secondary btn-sm" href="edit-program.php?id=<?=$row['id']?>">
-              <i class="fa fa-edit"></i> Szerkesztés
+              <i class="fa fa-edit"></i><span> Szerkesztés</span>
             </a>
             <a class="btn btn-danger btn-sm" href="edit-program.php?delete=<?=$row['id']?>">
-              <i class="fa fa-remove"></i> Törlés
+              <i class="fa fa-remove"></i><span> Törlés</span>
             </a>
           </td>
         </tr>
         <?php endwhile; ?>
       </tbody>
     </table>
-
-    <form method="post" action="">
-      <div class="card">
-        <div class="card-header">
-          Új program felvétele
-        </div>
-        <div class="card-body">
-          <div class="form-group">
-            <label for="author" class="mr-2">Tulajdonos</label>
-            <select class="custom-select" name="author">
-              <?php
-                $queryAuthors = 'SELECT id, CONCAT(vezeteknev, " ", keresztnev) AS nev FROM szemely ORDER BY vezeteknev';
-                $resultAuthors = mysqli_query($db, $queryAuthors) or die(mysqli_error($db));
-                while ($row = mysqli_fetch_array($resultAuthors)) {
-                  print('<option value="' . $row['id'] . '" >' . $row['nev'] . '</option>');
-                }
-              ?>
-            </select>
-          </div>
-          <div class="form-group mb-0">
-            <label for="priority" class="mr-2">Prioritás</label>
-            <select class="custom-select" name="priority">
-              <?php
-                for ($i = sizeof($priorities) - 1; $i >= 0; $i--) {
-                  print('<option value="' . $i . '">' . $priorities[$i] . '</option>');
-                }
-              ?>
-            </select>
-          </div>
-        </div>
-        <div class="card-footer">
-          <input type="submit" class="btn btn-primary" name="add" value="Hozzáadás">
-        </div>
-      </div>
-    </form>
           
     <?php
         closeDb($db);
