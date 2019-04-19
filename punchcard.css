@@ -67,7 +67,12 @@ td:last-child {
 }
 .jumbotron * {
   box-sizing: initial;
+  font-family: 'Inconsolata', monospace;
 }
+.jumbotron h1 {
+  margin-left: 0.45em;
+}
+
 .punchwrap {
   filter: drop-shadow(2px 3px 2px rgba(0,0,0,0.3));
 }
@@ -76,7 +81,6 @@ td:last-child {
   display: flex;
   flex-wrap: nowrap;
   overflow: hidden;
-  font-family: 'Inconsolata', monospace;
   background: var(--card-background);
   /* margin-left: -0.4em; */
 }
