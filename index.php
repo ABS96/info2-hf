@@ -6,7 +6,7 @@
   <div class="container main-content">
     <div class="punchwrap">
       <div class="jumbotron text-light">
-        <h1>Lyukkártyás program nyilvántartás</h1>
+        <h1>Lyukkártyás programok nyilvántartása</h1>
         <div class="punch"></div>
       </div>
     </div>

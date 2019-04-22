@@ -1,4 +1,4 @@
-# Lyukkártyás program nyilvántartás
+# Lyukkártyás programok nyilvántartása
 
 Régen a hallgatók lyukkártyára írták a programjaikat, aztán ezt odaadták egy operátornak, aki lefuttatta azokat a tanszéki számítógépen.  
 A projekt célja egy olyan alkalmazás kivitelezése, amellyel az operátor könnyen kezelheti a neki feldolgozásra átadott programokat.
@@ -8,6 +8,7 @@ A projekt célja egy olyan alkalmazás kivitelezése, amellyel az operátor kön
 Egy lyukkártyás programokat nyilvántartó adatbázist szeretnék megvalósítani. Az adatbázisban szerepelni fognak a feldolgozandó programok, illetve az azokat megíró személyek. A cél ezen adatbázis karbantartása, ahol az operátor beviheti, ellenőrizheti, és törölheti az általa feldolgozandó programok adatait.
 
 ## Elérhető funkciók
+
 Az alkalmazás a következő funkciókat biztosítja:
  * Programok kezelése:
     * Új program létrehozása
