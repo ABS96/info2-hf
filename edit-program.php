@@ -46,7 +46,7 @@ include 'common_head.html';
         return;
       }
       ?>
-      <h1>Program szerkesztése: [<?=$id?>.]</h1>
+      <h1>Program szerkesztése: <span class="program-id"><?=$id?></span></h1>
       <?php if ($successful_update): ?>
         <p>
           <span class="badge badge-success">Program frissítése sikeres</span>

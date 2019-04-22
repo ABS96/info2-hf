@@ -77,7 +77,11 @@ include 'common_head.html';
                 <?php
                   $queryCountPrograms = 'SELECT COUNT(id) FROM program WHERE author = ' . $row['id'];
                   $countResult = mysqli_query($db, $queryCountPrograms) or die(mysqli_error($db));
-                  print(mysqli_fetch_row($countResult)[0]);
+                  $progCount = mysqli_fetch_row($countResult)[0];
+                  print($progCount);
+                  for ($i=0; $i < $progCount; $i++) { 
+                    print('<i class="program-dot"></i>');
+                  }
                 ?>
               </td>
               <td class="text-right">
