@@ -17,12 +17,15 @@ if (isset($_POST['update'])) {
     mysqli_query($db, $query) or die(mysqli_error($db));
     $successful_update = true;
 } else if (isset($_POST['delete']) || isset($_GET['delete'])) {
-    $id = isset($_GET['delete']) ? $_GET['delete'] : $_POST['id'];
-    $query = sprintf('DELETE FROM program WHERE id = %s', 
-        mysqli_real_escape_string($db, $id));
-    $ret = mysqli_query($db, $query) or die(mysqli_error($db));
+    $id = mysqli_real_escape_string($db, isset($_GET['delete']) ? $_GET['delete'] : $_POST['id']);
+    $queryAuthor = sprintf('SELECT author FROM program WHERE id = %s', $id);
+    $resultAuthor = mysqli_query($db, $queryAuthor) or die(mysqli_error($db));
+    $author = mysqli_fetch_row($resultAuthor)[0];
+    $queryDelete = sprintf('DELETE FROM program WHERE id = %s', $id);
+    $ret = mysqli_query($db, $queryDelete) or die(mysqli_error($db));
     $_SESSION['program_deleted'] = true;
-    header("Location: programs.php");
+    $authorParam = isset($_GET['delete']) ? "?author=" . $author : "";
+    header("Location: programs.php" . $authorParam);
     return;
 }
 
