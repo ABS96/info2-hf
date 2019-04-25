@@ -1,4 +1,5 @@
 <?php
+session_start();
 function getDb() {
   $link = mysqli_connect("localhost", "root", "") 
     or die("Kapcsolódási hiba: " . mysqli_error());

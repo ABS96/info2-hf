@@ -30,10 +30,16 @@ include 'common_head.html';
   <div class="container main-content">
     <h1>Személyek kezelése</h1>
     <?php if ($added): ?>
-      <p>
-        <span class="badge badge-success">Új személy hozzáadva</span>
-      </p>
-    <?php endif; ?>
+      <div class="alert alert-success">Személy hozzáadva</div>
+    <?php
+      endif;
+      if (isset($_SESSION['person_deleted'])): 
+    ?>
+      <div class="alert alert-danger">Személy törölve</div>
+    <?php
+      unset($_SESSION['person_deleted']);
+      endif;
+    ?>
 
     <form class="form-inline mb-3" method="post">
       <div class="card">
@@ -116,8 +122,8 @@ include 'common_head.html';
               <div class="input-group-prepend">
                 <span class="input-group-text">Vezetéknév és keresztnév</span>
               </div>
-              <input type="text" aria-label="Vezetéknév" name="vezeteknev" class="form-control" id="vezeteknev">
-              <input type="text" aria-label="Keresztnév" name="keresztnev" class="form-control" id="keresztnev">
+              <input type="text" required aria-label="Vezetéknév" name="vezeteknev" class="form-control" id="vezeteknev">
+              <input type="text" required aria-label="Keresztnév" name="keresztnev" class="form-control" id="keresztnev">
             </div>
           </div>
           <div class="form-group">

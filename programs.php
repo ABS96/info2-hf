@@ -34,10 +34,16 @@ include 'common_head.html';
   <div class="container main-content">
     <h1>Programok kezelése</h1>
     <?php if ($added): ?>
-      <p>
-        <span class="badge badge-success">Új program hozzáadva</span>
-      </p>
-    <?php endif; ?>
+      <div class="alert alert-success" role="alert">Új program hozzáadva</div>
+    <?php
+      endif;
+      if (isset($_SESSION['program_deleted'])):
+    ?>
+      <div class="alert alert-danger" role="alert">Program törölve</div>
+    <?php
+      unset($_SESSION['program_deleted']);
+      endif;
+    ?>
 
     <div class="row">
       <form class="form-inline col" method="post" action="programs.php">

@@ -21,6 +21,7 @@ if (isset($_POST['update'])) {
     $query = sprintf('DELETE FROM program WHERE id = %s', 
         mysqli_real_escape_string($db, $id));
     $ret = mysqli_query($db, $query) or die(mysqli_error($db));
+    $_SESSION['program_deleted'] = true;
     header("Location: programs.php");
     return;
 }

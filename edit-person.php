@@ -26,6 +26,7 @@ if (isset($_POST['update'])) {
         mysqli_real_escape_string($db, $id));
     $ret1 = mysqli_query($db, $query1) or die(mysqli_error($db));
     $ret2 = mysqli_query($db, $query2) or die(mysqli_error($db));
+    $_SESSION['person_deleted'] = true;
     header("Location: personnel.php");
     return;
 }
@@ -53,19 +54,17 @@ include 'common_head.html';
       ?>
       <h1>Személy szerkesztése</h1>
       <?php if ($successful_update): ?>
-        <p>
-          <span class="badge badge-success">Személy frissítése sikeres</span>
-        </p>
+        <div class="alert alert-success">Személy adatai frissítve</div>
       <?php endif; ?>
       <form action="" method="post">
         <input type="hidden" name="id" id="id" value="<?=$id?>">
         <div class="form-group">
           <label for="vezeteknev">Vezetéknév</label>
-          <input type="text" class="form-control" name="vezeteknev" id="vezeteknev" value="<?=$row['vezeteknev']?>">
+          <input type="text" required class="form-control" name="vezeteknev" id="vezeteknev" value="<?=$row['vezeteknev']?>">
         </div>
         <div class="form-group">
           <label for="keresztnev">Keresztnév</label>
-          <input type="text" class="form-control" name="keresztnev" id="keresztnev" value="<?=$row['keresztnev']?>">
+          <input type="text" required class="form-control" name="keresztnev" id="keresztnev" value="<?=$row['keresztnev']?>">
         </div>
         <div class="form-group">
           <label for="titulus">Titulus</label>
