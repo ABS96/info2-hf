@@ -139,45 +139,47 @@ include 'common_head.html';
       $result = mysqli_query($db, $queryListPrograms) or die(mysqli_error($db));
       $author = 0;
     ?>
-    <table class="table table-sm table-bordered">
-      <thead class="thead-dark">
+    <div class="table-responsive">
+      <table class="table table-sm table-bordered">
+        <thead class="thead-dark">
+            <tr>
+              <th>Tulajdonos</th>
+              <th>Azonosító</th>
+              <th>Prioritás</th>
+              <th>Felvétel dátuma</th>
+              <th>Műveletek</th>
+            </tr>
+        </thead>
+        <tbody>
+          <?php while ($row = mysqli_fetch_array($result)): ?>
           <tr>
-            <td>Tulajdonos</td>
-            <td>Azonosító</td>
-            <td>Prioritás</td>
-            <td>Felvétel dátuma</td>
-            <td>Műveletek</td>
+            <?php
+              $queryCount = 'SELECT COUNT(author) FROM program INNER JOIN szemely sz on sz.id = author WHERE author = ' . $row['author'] . (isset($queryFilter) ? (' AND ' . $queryFilter) : '');
+              $author_count = mysqli_query($db, $queryCount) or die(mysqli_error($db));
+              if ($author != $row['author']) {
+                print('<td rowspan="' . mysqli_fetch_row($author_count)[0] . '">' . $row['nev'] . '</td>');
+              }
+              $author = $row['author'];
+            ?>
+            <td><?=$row['id']?></td>
+            <td><?=$priorities[$row['prioritas']]?></td>
+            <td><?=$row['felvetel_datum']?></td>
+            <td class="text-right">
+              <a class="btn btn-secondary btn-sm" href="edit-program.php?id=<?=$row['id']?>">
+                <i class="fa fa-edit"></i><span> Szerkesztés</span>
+              </a>
+              <a class="btn btn-danger btn-sm" href="edit-program.php?delete=<?=$row['id']?>">
+                <i class="fa fa-remove"></i><span> Törlés</span>
+              </a>
+            </td>
           </tr>
-      </thead>
-      <tbody>
-        <?php while ($row = mysqli_fetch_array($result)): ?>
-        <tr>
-          <?php
-            $queryCount = 'SELECT COUNT(author) FROM program INNER JOIN szemely sz on sz.id = author WHERE author = ' . $row['author'] . (isset($queryFilter) ? (' AND ' . $queryFilter) : '');
-            $author_count = mysqli_query($db, $queryCount) or die(mysqli_error($db));
-            if ($author != $row['author']) {
-              print('<td rowspan="' . mysqli_fetch_row($author_count)[0] . '">' . $row['nev'] . '</td>');
-            }
-            $author = $row['author'];
-          ?>
-          <td><?=$row['id']?></td>
-          <td><?=$priorities[$row['prioritas']]?></td>
-          <td><?=$row['felvetel_datum']?></td>
-          <td class="text-right">
-            <a class="btn btn-secondary btn-sm" href="edit-program.php?id=<?=$row['id']?>">
-              <i class="fa fa-edit"></i><span> Szerkesztés</span>
-            </a>
-            <a class="btn btn-danger btn-sm" href="edit-program.php?delete=<?=$row['id']?>">
-              <i class="fa fa-remove"></i><span> Törlés</span>
-            </a>
-          </td>
-        </tr>
-        <?php endwhile; ?>
-      </tbody>
-    </table>
+          <?php endwhile; ?>
+        </tbody>
+      </table>
+    </div>
           
     <?php
-        closeDb($db);
+      closeDb($db);
     ?>
   </div>
 <?php include 'common_footer.html'; ?>

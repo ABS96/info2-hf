@@ -108,7 +108,7 @@ include 'common_head.html';
     </div>
     
     <?php
-        closeDb($db);
+      closeDb($db);
     ?>
 
     <form method="post" action="">
