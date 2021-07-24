@@ -4,18 +4,9 @@ $db = getDb();
 
 $priorities = ['Magas', 'Közepes', 'Alacsony'];
 
-$added = false;
+$add_failed = false;
 if (isset($_POST['add'])) {
-  $author = mysqli_real_escape_string($db, $_POST['author']);
-  $priority = mysqli_real_escape_string($db, $_POST['priority']);
-
-  $queryAddProgram = sprintf('INSERT INTO program(author, prioritas, felvetel_datum) VALUES ("%s", "%s", "%s")',
-    $author,
-    $priority,
-    date('Y-m-d')
-  );
-  mysqli_query($db, $queryAddProgram) or die(mysqli_error($db));
-  $added = true;
+  $add_failed = true;
 }
 
 if (isset($_GET['author'])) {
@@ -33,15 +24,15 @@ include 'common_head.html';
 
   <div class="container main-content">
     <h1>Programok kezelése</h1>
-    <?php if ($added): ?>
-      <div class="alert alert-success" role="alert">Új program hozzáadva</div>
+    <?php if ($add_failed): ?>
+      <div class="alert alert-warning" role="alert">Program hozzáadása sikertelen (az adatbázis nem módosítható)</div>
     <?php
       endif;
-      if (isset($_SESSION['program_deleted'])):
+      if (isset($_SESSION['program_deleted_failed'])):
     ?>
-      <div class="alert alert-danger" role="alert">Program törölve</div>
+      <div class="alert alert-warning" role="alert">Program törlése sikertelen (az adatbázis nem módosítható)</div>
     <?php
-      unset($_SESSION['program_deleted']);
+      unset($_SESSION['program_deleted_failed']);
       endif;
     ?>
 
@@ -168,7 +159,7 @@ include 'common_head.html';
               <a class="btn btn-secondary btn-sm" href="edit-program.php?id=<?=$row['id']?>">
                 <i class="fa fa-edit"></i><span> Szerkesztés</span>
               </a>
-              <a class="btn btn-danger btn-sm" href="edit-program.php?delete=<?=$row['id']?>">
+              <a class="btn btn-danger btn-sm disabled" href="edit-program.php?delete=<?=$row['id']?>">
                 <i class="fa fa-remove"></i><span> Törlés</span>
               </a>
             </td>

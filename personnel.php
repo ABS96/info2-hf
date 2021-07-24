@@ -30,14 +30,14 @@ include 'common_head.html';
   <div class="container main-content">
     <h1>Személyek kezelése</h1>
     <?php if ($added): ?>
-      <div class="alert alert-success">Személy hozzáadva</div>
+      <div class="alert alert-warning">Személy hozzáadása sikertelen (az adatbázis nem módosítható)</div>
     <?php
       endif;
-      if (isset($_SESSION['person_deleted'])): 
+      if (isset($_SESSION['person_deleted_failed'])): 
     ?>
-      <div class="alert alert-danger">Személy törölve</div>
+      <div class="alert alert-warning">Személy törlése sikertelen (az adatbázis nem módosítható)</div>
     <?php
-      unset($_SESSION['person_deleted']);
+      unset($_SESSION['person_deleted_failed']);
       endif;
     ?>
 
@@ -97,7 +97,7 @@ include 'common_head.html';
                 <a class="btn btn-secondary btn-sm" href="edit-person.php?id=<?=$row['id']?>">
                   <i class="fa fa-edit"></i><span> Szerkesztés</span>
                 </a>
-                <a class="btn btn-danger btn-sm" href="edit-person.php?delete=<?=$row['id']?>">
+                <a class="btn btn-danger btn-sm disabled" href="edit-person.php?delete=<?=$row['id']?>">
                   <i class="fa fa-remove"></i><span> Törlés</span>
                 </a>
               </td>

@@ -4,26 +4,15 @@ $db = getDb();
 
 $priorities = ['Magas', 'Közepes', 'Alacsony'];
 
-$successful_update = false;
+$update_failed = false;
 if (isset($_POST['update'])) {
-    $id = mysqli_real_escape_string($db, $_POST['id']);
-    $priority = mysqli_real_escape_string($db, $_POST['priority']);
-    $author = mysqli_real_escape_string($db, $_POST['author']);
-    $date = mysqli_real_escape_string($db, $_POST['date']);
-
-    $query = sprintf("UPDATE program SET prioritas='%s', author='%s', felvetel_datum='%s' WHERE id=%s",
-            $priority, $author, $date, $id);
-
-    mysqli_query($db, $query) or die(mysqli_error($db));
-    $successful_update = true;
+    $update_failed = true;
 } else if (isset($_POST['delete']) || isset($_GET['delete'])) {
     $id = mysqli_real_escape_string($db, isset($_GET['delete']) ? $_GET['delete'] : $_POST['id']);
     $queryAuthor = sprintf('SELECT author FROM program WHERE id = %s', $id);
     $resultAuthor = mysqli_query($db, $queryAuthor) or die(mysqli_error($db));
     $author = mysqli_fetch_row($resultAuthor)[0];
-    $queryDelete = sprintf('DELETE FROM program WHERE id = %s', $id);
-    $ret = mysqli_query($db, $queryDelete) or die(mysqli_error($db));
-    $_SESSION['program_deleted'] = true;
+    $_SESSION['program_deleted_failed'] = true;
     $authorParam = isset($_GET['delete']) ? "?author=" . $author : "";
     header("Location: programs.php" . $authorParam);
     return;
@@ -51,9 +40,9 @@ include 'common_head.html';
       }
       ?>
       <h1>Program szerkesztése: <span class="program-id"><?=$id?></span></h1>
-      <?php if ($successful_update): ?>
+      <?php if ($update_failed): ?>
         <p>
-          <span class="badge badge-success">Program frissítése sikeres</span>
+          <span class="alert alert-warning">Program frissítése sikertelen (az adatbázis nem módosítható)</span>
         </p>
       <?php endif; ?>
       <form action="" method="post">
@@ -84,8 +73,8 @@ include 'common_head.html';
           <label for="date" class="mr-2">Felvétel dátuma</label>
           <input class="form-control" type="date" name="date" value="<?=$row['felvetel_datum']?>">
         </div>
-        <input class="btn btn-primary" name="update" type="submit" value="Mentés">
-        <input class="btn btn-danger" name="delete" type="submit" value="Törlés">
+        <input class="btn btn-primary disabled" name="update" type="submit" value="Mentés">
+        <input class="btn btn-danger disabled" name="delete" type="submit" value="Törlés">
       </form>
 
       <?php closeDb($db); ?>

@@ -2,7 +2,7 @@
 include 'jobs.php';
 $db = getDb();
 
-$successful_update = false;
+$update_failed = false;
 if (isset($_POST['update'])) {
     $id = mysqli_real_escape_string($db, $_POST['id']);
     $vezeteknev = mysqli_real_escape_string($db, $_POST['vezeteknev']);
@@ -11,22 +11,11 @@ if (isset($_POST['update'])) {
     if (!$vezeteknev or !$keresztnev) {
         die('A személynek rendelkeznie kell vezeték- és keresztnévvel!');
     } else {
-        $query = sprintf("UPDATE szemely SET vezeteknev='%s', keresztnev='%s', titulus='%s' WHERE id=%s",
-                $vezeteknev, $keresztnev, $titulus, $id);
-
-        mysqli_query($db, $query) or die(mysqli_error($db));
-        $successful_update = true;
+        $update_failed = true;
     }
 
 } else if (isset($_POST['delete']) || isset($_GET['delete'])) {
-    $id = isset($_GET['delete']) ? $_GET['delete'] : $_POST['id'];
-    $query1 = sprintf('DELETE FROM program WHERE author = %s', 
-        mysqli_real_escape_string($db, $id));
-    $query2 = sprintf('DELETE FROM szemely WHERE id = %s', 
-        mysqli_real_escape_string($db, $id));
-    $ret1 = mysqli_query($db, $query1) or die(mysqli_error($db));
-    $ret2 = mysqli_query($db, $query2) or die(mysqli_error($db));
-    $_SESSION['person_deleted'] = true;
+    $_SESSION['person_deleted_failed'] = true;
     header("Location: personnel.php");
     return;
 }
@@ -53,8 +42,8 @@ include 'common_head.html';
       }
       ?>
       <h1>Személy szerkesztése</h1>
-      <?php if ($successful_update): ?>
-        <div class="alert alert-success">Személy adatai frissítve</div>
+      <?php if ($update_failed): ?>
+        <div class="alert alert-warning">Személy adatainak frissítése sikertelen (az adatbázis nem módosítható)</div>
       <?php endif; ?>
       <form action="" method="post">
         <input type="hidden" name="id" id="id" value="<?=$id?>">
@@ -79,8 +68,8 @@ include 'common_head.html';
             ><label class="ml-1">oktató</label>
           </div>
         </div>
-        <input class="btn btn-primary" name="update" type="submit" value="Mentés">
-        <input class="btn btn-danger" name="delete" type="submit" value="Törlés">
+        <input class="btn btn-primary disabled" name="update" type="submit" value="Mentés">
+        <input class="btn btn-danger disabled" name="delete" type="submit" value="Törlés">
       </form>
 
       <?php closeDb($db); ?>
