@@ -133,5 +133,5 @@ td:last-child {
 /* Show actions but make it clear that they have no effect in read-only mode */
 .disabled {
   pointer-events: all !important;
-  cursor: not-allowed;
+  cursor: not-allowed !important;
 }

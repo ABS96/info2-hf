@@ -105,7 +105,7 @@ include 'common_head.html';
             </div>
           </div>
           <div class="card-footer">
-            <input type="submit" class="btn btn-primary" name="add" value="Hozzáadás">
+            <input type="submit" class="btn btn-primary disabled" name="add" value="Hozzáadás">
           </div>
         </div>
       </form>
