@@ -2,7 +2,7 @@
 include 'jobs.php';
 $db = getDb();
 
-$added = false;
+$add_failed = false;
 if (isset($_POST['add'])) {
   $vezeteknev = mysqli_real_escape_string($db, $_POST['vezeteknev']);
   $keresztnev = mysqli_real_escape_string($db, $_POST['keresztnev']);
@@ -11,13 +11,7 @@ if (isset($_POST['add'])) {
   }
   $titulus = mysqli_real_escape_string($db, $_POST['titulus']);
 
-  $queryAddPerson = sprintf('INSERT INTO szemely(vezeteknev, keresztnev, titulus) VALUES ("%s", "%s", "%s")',
-    $vezeteknev,
-    $keresztnev,
-    $titulus
-  );
-  mysqli_query($db, $queryAddPerson) or die(mysqli_error($db));
-  $added = true;
+  $add_failed = true;
 }
 
 include 'common_head.html';
@@ -29,7 +23,7 @@ include 'common_head.html';
 
   <div class="container main-content">
     <h1>Személyek kezelése</h1>
-    <?php if ($added): ?>
+    <?php if ($add_failed): ?>
       <div class="alert alert-warning">Személy hozzáadása sikertelen (az adatbázis nem módosítható)</div>
     <?php
       endif;
